@@ -1,7 +1,7 @@
 package online.decentworld.charge.charger;
 
 import online.decentworld.charge.ChargeResultCode;
-import online.decentworld.charge.ConsumType;
+import online.decentworld.charge.type.ConsumeType;
 
 /**
  * Created by Sammax on 2016/9/9.
@@ -9,7 +9,7 @@ import online.decentworld.charge.ConsumType;
 public class ChargeResult {
     private ChargeResultCode statusCode;
     private int payerWealth;
-    private ConsumType type;
+    private ConsumeType type;
 
     public ChargeResultCode getStatusCode() {
         return statusCode;
@@ -27,11 +27,11 @@ public class ChargeResult {
         this.payerWealth = payerWealth;
     }
 
-    public ConsumType getType() {
+    public ConsumeType getType() {
         return type;
     }
 
-    public void setType(ConsumType type) {
+    public void setType(ConsumeType type) {
         this.type = type;
     }
 }

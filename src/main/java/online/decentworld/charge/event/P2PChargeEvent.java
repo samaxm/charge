@@ -1,6 +1,7 @@
 package online.decentworld.charge.event;
 
-import online.decentworld.charge.ConsumType;
+import online.decentworld.charge.ChargeOperation;
+import online.decentworld.charge.type.ConsumeType;
 
 /**
  * Created by Sammax on 2016/9/9.
@@ -9,7 +10,25 @@ public class P2PChargeEvent implements ChargeEvent {
 
     private String payer;
     private String payee;
-    private ConsumType type;
+    private ChargeOperation payerChargeOperation;
+    private ChargeOperation payeeChargeOperation;
+    private ConsumeType type;
+
+    public ChargeOperation getPayerChargeOperation() {
+        return payerChargeOperation;
+    }
+
+    public void setPayerChargeOperation(ChargeOperation payerChargeOperation) {
+        this.payerChargeOperation = payerChargeOperation;
+    }
+
+    public ChargeOperation getPayeeChargeOperation() {
+        return payeeChargeOperation;
+    }
+
+    public void setPayeeChargeOperation(ChargeOperation payeeChargeOperation) {
+        this.payeeChargeOperation = payeeChargeOperation;
+    }
 
     public String getPayer() {
         return payer;
@@ -27,9 +46,6 @@ public class P2PChargeEvent implements ChargeEvent {
         this.payee = payee;
     }
 
-    public void setType(ConsumType type) {
-        this.type = type;
-    }
 
     public P2PChargeEvent(String payer, String payee) {
         this.payer = payer;
@@ -37,7 +53,7 @@ public class P2PChargeEvent implements ChargeEvent {
     }
 
     @Override
-    public ConsumType getConsumType() {
-        return null;
+    public ConsumeType getConsumeType() {
+        return type;
     }
 }

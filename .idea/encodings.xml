@@ -4,16 +4,14 @@
     <file url="file://$PROJECT_DIR$" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/ChargeResultCode.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/ConsumType.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/MessagePriceCountResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/charger/ChargeResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/charger/DBCharger.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/charger/ICharger.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/charger/MessageChargeResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/charger/P2PChargeResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/event/ChargeEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/event/P2PChargeEvent.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/event/SingleChargeEvent.java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/price/DefaultPriceCounter.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/price/DBPriceCounter.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/price/P2PPriceCountResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/price/PriceCountResult.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java/online/decentworld/charge/price/PriceCounter.java" charset="UTF-8" />

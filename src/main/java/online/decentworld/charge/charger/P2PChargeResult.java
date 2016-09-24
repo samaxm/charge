@@ -8,8 +8,6 @@ public class P2PChargeResult extends ChargeResult{
 
     private int payeeWealth;
 
-
-
     public int getPayeeWealth() {
         return payeeWealth;
     }

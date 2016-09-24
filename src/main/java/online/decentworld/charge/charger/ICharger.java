@@ -1,5 +1,6 @@
 package online.decentworld.charge.charger;
 
+import online.decentworld.charge.event.ChargeEvent;
 import online.decentworld.charge.price.PriceCountResult;
 
 /**
@@ -7,5 +8,5 @@ import online.decentworld.charge.price.PriceCountResult;
  */
 public interface ICharger {
 
-    public ChargeResult charge(PriceCountResult price);
+    public ChargeResult charge(ChargeEvent event,PriceCountResult price);
 }

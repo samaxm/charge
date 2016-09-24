@@ -2,6 +2,7 @@ package online.decentworld.charge.interceptor;
 
 import online.decentworld.charge.charger.ChargeResult;
 import online.decentworld.charge.event.ChargeEvent;
+import online.decentworld.charge.exception.IllegalChargeException;
 
 /**
  * Created by Sammax on 2016/9/22.
@@ -19,7 +20,9 @@ public abstract class AbstractChargeInterceptor implements  ChargeInterceptor {
 
     @Override
     public void beforeCharge(ChargeEvent event) throws IllegalChargeException {
-        doBeforeCharge(event);
+        if(accept(event.getConsumeType())){
+            doBeforeCharge(event);
+        }
         if(next!=null){
             next.beforeCharge(event);
         }
@@ -28,7 +31,9 @@ public abstract class AbstractChargeInterceptor implements  ChargeInterceptor {
 
     @Override
     public void afterCharge(ChargeResult result) throws IllegalChargeException  {
-        doAfterCharge(result);
+        if(accept(result.getType())) {
+            doAfterCharge(result);
+        }
         if(next!=null){
             next.afterCharge(result);
         }
