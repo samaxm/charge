@@ -1,8 +1,6 @@
 package online.decentworld.charge.service.spi;
 
-import online.decentworld.charge.service.IOrderService;
-import online.decentworld.charge.service.OrderType;
-import online.decentworld.charge.service.PayChannel;
+import online.decentworld.charge.service.*;
 import online.decentworld.rdb.entity.Order;
 import online.decentworld.rdb.mapper.OrderMapper;
 
@@ -26,7 +24,7 @@ public class OrderService implements IOrderService
     }
 
     @Override
-    public Order createOrder(PayChannel channel, int amount, String dwID, OrderType orderTpye, String extra, String ip, String msg) throws Exception {
+    public OrderReceipt createOrder(PayChannel channel, int amount, String dwID, OrderType orderTpye, String extra, String ip) throws Exception {
         Order order=new Order();
         order.setAmount(amount);
         order.setChannel(channel.getChannelString());
@@ -35,8 +33,9 @@ public class OrderService implements IOrderService
         order.setIsPaid(false);
         order.setTime(new Date());
         order.setOrdernumer(dwID+""+System.currentTimeMillis());
-//        WXPayServic
-        return null;
+        Object request=RequestCreatorFactory.getRequestCreator(channel).getRequestData(order,ip,RECHRGE_USER_NOTIFICATION);
+        orderMapper.insertSelective(order);
+        return new OrderReceipt(order.getOrdernumer(),request);
     }
 
     @Override

@@ -12,6 +12,7 @@ public class SingleChargeEvent implements ChargeEvent {
     private String dwID;
     private ChargeOperation operation;
 
+
     public SingleChargeEvent(ConsumeType type, String dwID,ChargeOperation operation) {
         this.type = type;
         this.dwID = dwID;
@@ -25,9 +26,6 @@ public class SingleChargeEvent implements ChargeEvent {
     public void setOperation(ChargeOperation operation) {
         this.operation = operation;
     }
-
-    public SingleChargeEvent(){}
-
 
     public String getDwID() {
         return dwID;

@@ -2,6 +2,8 @@ package online.decentworld.charge.service.wx;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import online.decentworld.charge.service.ThridPartyReqestCreator;
 import online.decentworld.rdb.entity.Order;
 import online.decentworld.tools.MD5;
 import org.dom4j.Document;
@@ -17,12 +19,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
-public class WXPayService{
+public class WXPayService implements ThridPartyReqestCreator{
 	
 
 	private static Field[] fileds=null;
@@ -41,7 +40,11 @@ public class WXPayService{
 		  payInfo.setNonce_str(create_nonce_str());
 		  payInfo.setBody(msg);
 		  payInfo.setOut_trade_no(order.getOrdernumer());
+		  payInfo.setAttach(ip);
 		  //单位为分
+		  JSONObject attach=new JSONObject();
+		  attach.put("dwID",order.getDwid());
+		  payInfo.setAttach(attach.toJSONString());
 		  payInfo.setTotal_fee(String.valueOf(order.getAmount()));
 		  payInfo.setSpbill_create_ip(ip);
 		  payInfo.setNotify_url(WXConfig.notify_url);
@@ -66,6 +69,7 @@ public class WXPayService{
 		   +"&total_fee="+payInfo.getTotal_fee()
 		   +"&trade_type="+payInfo.getTrade_type()
 		   +"&key="+WXConfig.key; //这个key注意
+		 	log.debug("String#"+signTemp);
 		  return  MD5.GetMD5Code(signTemp).toUpperCase();
 	}
 	 
@@ -135,7 +139,7 @@ public class WXPayService{
 	 
 	 private String getPrepay_id(Order order,String ip,String msg) throws Exception{
 		 String xml=createRequestXML(order, ip,msg);
-		 System.out.println("xml:"+xml);
+		 log.debug("xml:"+xml);
 		 StringBuffer sb=httpsRequest(WXConfig.unifiedorder_url,xml);
 		 System.out.println("return "+sb.toString());
 		 Map<String, String> map=parseXml(sb.toString());
@@ -143,7 +147,7 @@ public class WXPayService{
 		 if(prepay_id==null){
 			 throw new Exception("签名错误！");
 		 }
-		 System.out.println(prepay_id);
+		 log.debug(prepay_id);
 		 return prepay_id;
 	 }
 	 
@@ -176,5 +180,22 @@ public class WXPayService{
 		.append(WXConfig.app_secret).append("&code=").append(code).append("&grant_type=authorization_code");
 		StringBuffer result=httpsRequest(sb.toString(),null);
 		return (String) JSON.parseObject(result.toString()).get("openid");
+	}
+
+	public Object getRequestData(Order order,String ip,String msg) throws Exception {
+		HashMap<String,String> map=new HashMap<String, String>();
+		String prepayID=getPrepay_id(order, ip,msg);
+		map.put("appid", WXConfig.appid);
+		map.put("partnerid", WXConfig.mch_id);
+		map.put("prepayid", prepayID);
+		map.put("package", WXConfig.packageStr);
+		map.put("noncestr", create_nonce_str());
+		map.put("timestamp", String.valueOf(new Date().getTime()/1000));
+		String sign=signReturnMsg(map);
+		if(sign==null){
+			throw new Exception("sign error");
+		}
+		map.put("sign", sign);
+		return map;
 	}
 }
