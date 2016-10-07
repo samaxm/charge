@@ -25,6 +25,7 @@ public class DBCharger {
             try {
                 payerResult = wealthMapper.charge(payerID, payerChargeAmount);
                 result.setPayerWealth(payerResult.getNewWealth());
+                result.setPayerID(payerID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
                 logger.warn("", ex);
@@ -38,6 +39,7 @@ public class DBCharger {
             try {
                 payeeResult = wealthMapper.charge(payeeID, payeeChargeAmount);
                 result.setPayeeWealth(payeeResult.getNewWealth());
+                result.setPayeeID(payeeID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
                 logger.warn("", ex);
@@ -59,6 +61,7 @@ public class DBCharger {
             try {
                 dbResult = wealthMapper.charge(dwID, chargeAmount);
                 result.setPayerWealth(dbResult.getNewWealth());
+                result.setPayerID(dwID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
                 logger.warn("", ex);

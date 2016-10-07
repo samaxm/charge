@@ -1,12 +1,16 @@
 package online.decentworld.charge;
 
 import online.decentworld.charge.charger.ChargeResult;
+import online.decentworld.charge.charger.DefaultChargeReceiptWrapper;
+import online.decentworld.charge.charger.DefaultChargerFactory;
 import online.decentworld.charge.charger.ICharger;
 import online.decentworld.charge.event.ChargeEvent;
 import online.decentworld.charge.exception.IllegalChargeException;
 import online.decentworld.charge.interceptor.ChargeInterceptor;
-import online.decentworld.charge.price.PriceCountResult;
-import online.decentworld.charge.price.PriceCounter;
+import online.decentworld.charge.interceptor.LogInterceptor;
+import online.decentworld.charge.price.*;
+import online.decentworld.rdb.mapper.ConsumePriceMapper;
+import online.decentworld.rdb.mapper.OrderMapper;
 
 /**
 * Created by Sammax on 2016/9/22.
@@ -47,5 +51,21 @@ public class ChargeServiceTemplate implements ChargeService {
     @Override
     public void setChargeReceiptWrapper(ChargeReceiptWrapper wrapper) {
         this.wrapper = wrapper;
+    }
+
+
+    public static ChargeServiceTemplate defaultService(ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
+        ChargeServiceTemplate service=new ChargeServiceTemplate();
+        service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
+        service.setChargerFactory(new DefaultChargerFactory());
+        service.setInterceptor(new LogInterceptor());
+        DBPriceCounter dbPriceCounter=new DBPriceCounter();
+        dbPriceCounter.setPriceMapper(consumePriceMapper);
+        MessagePriceCounter messagePriceCounter=new MessagePriceCounter();
+        RechargePriceCounter rechargePriceCounter=new RechargePriceCounter();
+        rechargePriceCounter.setOrderMapper(orderMapper);
+        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter,rechargePriceCounter);
+        service.setPriceCounterFactory(configPriceCounterFactory);
+        return service;
     }
 }

@@ -8,6 +8,7 @@ import online.decentworld.charge.type.ConsumeType;
  */
 public class ChargeResult {
     private ChargeResultCode statusCode;
+    private String payerID;
     private int payerWealth;
     private ConsumeType type;
 
@@ -33,5 +34,13 @@ public class ChargeResult {
 
     public void setType(ConsumeType type) {
         this.type = type;
+    }
+
+    public String getPayerID() {
+        return payerID;
+    }
+
+    public void setPayerID(String payerID) {
+        this.payerID = payerID;
     }
 }

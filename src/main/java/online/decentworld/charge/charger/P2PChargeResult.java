@@ -7,7 +7,7 @@ package online.decentworld.charge.charger;
 public class P2PChargeResult extends ChargeResult{
 
     private int payeeWealth;
-
+    private String payeeID;
     public int getPayeeWealth() {
         return payeeWealth;
     }
@@ -16,4 +16,11 @@ public class P2PChargeResult extends ChargeResult{
         this.payeeWealth = payeeWealth;
     }
 
+    public String getPayeeID() {
+        return payeeID;
+    }
+
+    public void setPayeeID(String payeeID) {
+        this.payeeID = payeeID;
+    }
 }
