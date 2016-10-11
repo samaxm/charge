@@ -52,6 +52,14 @@ public class P2PChargeEvent implements ChargeEvent {
         this.payee = payee;
     }
 
+    public P2PChargeEvent(String payer, String payee, ChargeOperation payerChargeOperation, ChargeOperation payeeChargeOperation, ConsumeType type) {
+        this.payer = payer;
+        this.payee = payee;
+        this.payerChargeOperation = payerChargeOperation;
+        this.payeeChargeOperation = payeeChargeOperation;
+        this.type = type;
+    }
+
     @Override
     public ConsumeType getConsumeType() {
         return type;

@@ -2,7 +2,6 @@ package online.decentworld.charge.service.wx;
 
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import online.decentworld.charge.service.ThridPartyReqestCreator;
 import online.decentworld.rdb.entity.Order;
 import online.decentworld.tools.MD5;
@@ -42,9 +41,7 @@ public class WXPayService implements ThridPartyReqestCreator{
 		  payInfo.setOut_trade_no(order.getOrdernumer());
 		  payInfo.setAttach(ip);
 		  //单位为分
-		  JSONObject attach=new JSONObject();
-		  attach.put("dwID",order.getDwid());
-		  payInfo.setAttach(attach.toJSONString());
+		  payInfo.setAttach(order.getDwid());
 		  payInfo.setTotal_fee(String.valueOf(order.getAmount()));
 		  payInfo.setSpbill_create_ip(ip);
 		  payInfo.setNotify_url(WXConfig.notify_url);
@@ -91,6 +88,7 @@ public class WXPayService implements ThridPartyReqestCreator{
 	private String createRequestXML(Order order,String ip,String msg) throws Exception{
 		WXPayInfo info=createPayInfo(order, ip,msg);
 		String sign=getSign(info);
+		log.debug("[sign]#"+sign);
 		info.setSign(sign);
 		String xml=transferToXML(info);
 		return xml;
@@ -154,10 +152,11 @@ public class WXPayService implements ThridPartyReqestCreator{
 	 public static void main(String[] args) throws Exception {
 		WXPayService service=new WXPayService();
 		Order order=new Order();
-		order.setOrdernumer("15122217490015");
+		order.setOrdernumer("15122217490011");
 		order.setExtra("test");
 		order.setAmount(1);
-		service.getPrepay_id(order, "112.74.13.117","");
+		 order.setDwid("123456");
+		service.getPrepay_id(order, "112.74.13.117","大腕用户充值");
 	}
 	
 	 private String signReturnMsg(HashMap<String,String> map){

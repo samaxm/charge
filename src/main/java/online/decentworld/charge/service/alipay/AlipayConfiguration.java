@@ -43,8 +43,8 @@ public class AlipayConfiguration {
     public static String mobile_pay_service="mobile.securitypay.pay";
 
     static{
-        File privateKeyFile=new File(ChargeConfig.KEY_LOCATION,"rsa_private_key.pem");
-        File publicKeyFile=new File(ChargeConfig.KEY_LOCATION,"rsa_public_key.pem");
+        File privateKeyFile=new File(ChargeConfig.RSA_PRIVATE);
+        File publicKeyFile=new File(ChargeConfig.RSA_PUBLIC);
         FileInputStream fis=null;
         FileInputStream pub_fis=null;
         try {
@@ -55,13 +55,14 @@ public class AlipayConfiguration {
                 sb.append((char)c);
             }
             dw_private_key=sb.toString().replaceAll("(-+BEGIN PRIVATE KEY-+\\r?\\n?|-+END PRIVATE KEY-+\\r?\\n?)", "");
-
+            System.out.println(dw_private_key);
             pub_fis=new FileInputStream(publicKeyFile);
             sb.setLength(0);
             while((c=pub_fis.read())!=-1){
                 sb.append((char)c);
             }
             dw_public_key=sb.toString().replaceAll("(-+BEGIN PUBLIC KEY-+\\r?\\n?|-+END PUBLIC KEY-+\\r?\\n?)", "");
+            System.out.println(dw_public_key);
         } catch (IOException e) {
             e.printStackTrace();
         }finally{
