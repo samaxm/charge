@@ -11,20 +11,27 @@ import online.decentworld.charge.price.PriceCountResult;
  */
 public class DefalutCharger implements  ICharger {
 
-    private DBCharger charger=new DBCharger();
+    private DBCharger charger;
+
+    public DefalutCharger(DBCharger charger) {
+        this.charger = charger;
+    }
 
     @Override
     public ChargeResult charge(ChargeEvent event,PriceCountResult price) {
+        ChargeResult chargeResult=null;
         if(event instanceof P2PChargeEvent){
             P2PPriceCountResult result=(P2PPriceCountResult)price;
             P2PChargeEvent p2PChargeEvent=(P2PChargeEvent)event;
-            return charger.p2pCharge(p2PChargeEvent.getPayer(), p2PChargeEvent.getPayee()
-                    ,p2PChargeEvent.getPayerChargeOperation().getChargePrice(result.getPayerChargeAmount()),
-                    p2PChargeEvent.getPayeeChargeOperation().getChargePrice(result.getPayeeChargeAmount()));
+            chargeResult=charger.p2pCharge(p2PChargeEvent.getPayer(), p2PChargeEvent.getPayee()
+                     , p2PChargeEvent.getPayerChargeOperation().getChargePrice(result.getPayerChargeAmount()),
+                     p2PChargeEvent.getPayeeChargeOperation().getChargePrice(result.getPayeeChargeAmount()));
         }else{
             SingleChargeEvent singleChargeEvent=(SingleChargeEvent)event;
-            return charger.charge(singleChargeEvent.getDwID(),
+            chargeResult=charger.charge(singleChargeEvent.getDwID(),
                     singleChargeEvent.getOperation().getChargePrice(price.getPayerChargeAmount()));
         }
+        chargeResult.setType(event.getConsumeType());
+        return chargeResult;
     }
 }

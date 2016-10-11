@@ -1,6 +1,6 @@
-package online.decentworld.charge.charger;
+package online.decentworld.charge.receipt;
 
-import online.decentworld.charge.ChargeReceipt;
+import online.decentworld.charge.charger.ChargeResult;
 
 /**
  * Created by Sammax on 2016/10/7.

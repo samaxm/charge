@@ -8,7 +8,12 @@ import online.decentworld.charge.event.ChargeEvent;
  */
 public class DefaultChargerFactory implements ChargerFactory {
 
-    private DefalutCharger charger=new DefalutCharger();
+    private DefalutCharger charger;
+
+    public DefaultChargerFactory(DefalutCharger charger) {
+        this.charger = charger;
+    }
+
     @Override
     public ICharger getCharger(ChargeEvent event) {
         return charger;

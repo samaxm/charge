@@ -1,16 +1,17 @@
 package online.decentworld.charge;
 
-import online.decentworld.charge.charger.ChargeResult;
-import online.decentworld.charge.charger.DefaultChargeReceiptWrapper;
-import online.decentworld.charge.charger.DefaultChargerFactory;
-import online.decentworld.charge.charger.ICharger;
+import online.decentworld.charge.charger.*;
+import online.decentworld.charge.receipt.ChargeReceipt;
+import online.decentworld.charge.receipt.DefaultChargeReceiptWrapper;
 import online.decentworld.charge.event.ChargeEvent;
 import online.decentworld.charge.exception.IllegalChargeException;
 import online.decentworld.charge.interceptor.ChargeInterceptor;
 import online.decentworld.charge.interceptor.LogInterceptor;
 import online.decentworld.charge.price.*;
+import online.decentworld.charge.receipt.ChargeReceiptWrapper;
 import online.decentworld.rdb.mapper.ConsumePriceMapper;
 import online.decentworld.rdb.mapper.OrderMapper;
+import online.decentworld.rdb.mapper.WealthMapper;
 
 /**
 * Created by Sammax on 2016/9/22.
@@ -54,10 +55,10 @@ public class ChargeServiceTemplate implements ChargeService {
     }
 
 
-    public static ChargeServiceTemplate defaultService(ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
+    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
         ChargeServiceTemplate service=new ChargeServiceTemplate();
         service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
-        service.setChargerFactory(new DefaultChargerFactory());
+        service.setChargerFactory(new DefaultChargerFactory(new DefalutCharger(new DBCharger(wealthMapper))));
         service.setInterceptor(new LogInterceptor());
         DBPriceCounter dbPriceCounter=new DBPriceCounter();
         dbPriceCounter.setPriceMapper(consumePriceMapper);

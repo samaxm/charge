@@ -1,4 +1,4 @@
-package online.decentworld.charge;
+package online.decentworld.charge.receipt;
 
 import online.decentworld.charge.charger.ChargeResult;
 

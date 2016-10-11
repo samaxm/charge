@@ -16,6 +16,9 @@ public class DBCharger {
 
     private WealthMapper wealthMapper;
 
+    public DBCharger(WealthMapper wealthMapper) {
+        this.wealthMapper = wealthMapper;
+    }
 
     public P2PChargeResult p2pCharge(String payerID, String payeeID, int payerChargeAmount, int payeeChargeAmount) {
         DBChargeResult payerResult=null;
