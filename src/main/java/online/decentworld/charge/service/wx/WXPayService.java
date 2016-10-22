@@ -12,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.util.*;
@@ -71,7 +68,7 @@ public class WXPayService implements ThridPartyReqestCreator{
 	}
 	 
 	 
-	private String transferToXML(WXPayInfo payInfo) throws IllegalArgumentException, IllegalAccessException{
+	private String transferToXML(WXPayInfo payInfo) throws IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException {
 		StringBuffer sb=new StringBuffer();
 		sb.append("<xml>").append("\n");
 		for(Field f:fileds){
@@ -104,9 +101,9 @@ public class WXPayService implements ThridPartyReqestCreator{
 	  connection.setUseCaches(false);
 	  connection.setRequestMethod("GET");
 	  if (null != output) {
-	  OutputStream outputStream = connection.getOutputStream();
-	  outputStream.write(output.getBytes("UTF-8"));
-	  outputStream.close();
+		  OutputStream outputStream = connection.getOutputStream();
+		  outputStream.write(output.getBytes("UTF-8"));
+		  outputStream.close();
 	  }
 	  // 从输入流读取返回内容
 	  InputStream inputStream = connection.getInputStream();
@@ -120,7 +117,6 @@ public class WXPayService implements ThridPartyReqestCreator{
 	  bufferedReader.close();
 	  inputStreamReader.close();
 	  inputStream.close();
-	  inputStream = null;
 	  connection.disconnect();
 	  return buffer;
 	 }
@@ -152,7 +148,7 @@ public class WXPayService implements ThridPartyReqestCreator{
 	 public static void main(String[] args) throws Exception {
 		WXPayService service=new WXPayService();
 		Order order=new Order();
-		order.setOrdernumer("15122217490011");
+		order.setOrdernumer("1234222217490011");
 		order.setExtra("test");
 		order.setAmount(1);
 		 order.setDwid("123456");

@@ -30,7 +30,7 @@ public class AlipayService implements ThridPartyReqestCreator{
 				.append("&out_trade_no=").append(order.getOrdernumer()).append("&partner=")
 				.append(AlipayConfiguration.partner).append("&payment_type=").append(AlipayConfiguration.payment_type)
 				.append("&seller_id=").append(AlipayConfiguration.sellerID).append("&service=").append(AlipayConfiguration.mobile_pay_service)
-				.append("&subject=").append(msg).append("&total_fee=").append(String.valueOf(order.getAmount()/100));//阿里单位为元
+				.append("&subject=").append(msg).append("&total_fee=").append(String.valueOf(order.getAmount()/100d));//阿里单位为元
 		String sign;
 		try {
 			sign=SignUtils.sign(sb.toString(), AlipayConfiguration.dw_private_key);
@@ -41,5 +41,11 @@ public class AlipayService implements ThridPartyReqestCreator{
 			log.warn("",e);
 		}
 		return sb.toString();
+	}
+
+
+	public static void main(String[] args) {
+		double a=15/100d;
+		System.out.println(a);
 	}
 }

@@ -13,7 +13,8 @@ public class OrderService implements IOrderService
 {
 
     private OrderMapper orderMapper;
-    private static String RECHRGE_USER_NOTIFICATION="decentworld_recharge";
+//    private static String RECHRGE_USER_NOTIFICATION="decentworld_recharge";
+    private static String RECHRGE_USER_NOTIFICATION="大腕用户充值";
 
     public OrderMapper getOrderMapper() {
         return orderMapper;

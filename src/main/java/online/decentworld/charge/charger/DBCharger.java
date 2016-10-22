@@ -27,6 +27,16 @@ public class DBCharger {
         if(payerChargeAmount!=0) {
             try {
                 payerResult = wealthMapper.charge(payerID, payerChargeAmount);
+
+                logger.debug("[PAYER_CHARGE_RESULT] code#"+payerResult.getResultCode()+" wealth#"+payerResult.getNewWealth());
+
+                if(payerResult.getResultCode()==DBChargeResult.WEALTH_NOT_ENOUGH){
+                    result.setStatusCode(ChargeResultCode.WEALTH_LACK);
+                    return result;
+                }else if(payerResult.getResultCode()!=DBChargeResult.SUCCESS){
+                    result.setStatusCode(ChargeResultCode.FAIL);
+                    return result;
+                }
                 result.setPayerWealth(payerResult.getNewWealth());
                 result.setPayerID(payerID);
             } catch (Exception ex) {
@@ -41,6 +51,16 @@ public class DBCharger {
         if(payeeChargeAmount!=0) {
             try {
                 payeeResult = wealthMapper.charge(payeeID, payeeChargeAmount);
+
+                logger.debug("[PAYEE_CHARGE_RESULT] code#"+payeeResult.getResultCode()+" wealth#"+payeeResult.getNewWealth());
+
+                if(payeeResult.getResultCode()==DBChargeResult.WEALTH_NOT_ENOUGH){
+                    result.setStatusCode(ChargeResultCode.WEALTH_LACK);
+                    return result;
+                }else if(payeeResult.getResultCode()!=DBChargeResult.SUCCESS){
+                    result.setStatusCode(ChargeResultCode.FAIL);
+                    return result;
+                }
                 result.setPayeeWealth(payeeResult.getNewWealth());
                 result.setPayeeID(payeeID);
             } catch (Exception ex) {

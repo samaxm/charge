@@ -24,7 +24,8 @@ public class AlipayConfiguration {
     public static String payment_type="1";
     // 调试用，创建TXT日志文件夹路径
     public static String log_path = "D:\\";
-    public static String notify_url="http://120.76.26.75/DecentWorldServer/charge/getOrderResponse";
+//    public static String notify_url="http://120.76.26.75/DecentWorldServer/charge/getOrderResponse";
+    public static String notify_url="http://http://dev.service.dawan.online/face2face/wealth/response/alipay";
     public static String notify_url_transfer="http://120.76.26.75:8888/DecentWorldServer/charge/getTransferResponse";
 
     // 字符编码格式 目前支持 gbk 或 utf-8
