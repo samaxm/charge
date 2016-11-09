@@ -16,14 +16,16 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
 
     private MessagePriceCounter messagePriceCounter;
 
-    private RechargePriceCounter rechargePriceCounter;
+    private ReChargePriceCounter reChargePriceCounter;
 
     private PlainMessagePriceCounter plainMessagePriceCounter=new PlainMessagePriceCounter();
 
-    public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, RechargePriceCounter rechargePriceCounter) {
+    private TransferPriceCounter transferPriceCounter=new TransferPriceCounter();
+
+    public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, ReChargePriceCounter reChargePriceCounter) {
         this.priceCounter = priceCounter;
         this.messagePriceCounter = messagePriceCounter;
-        this.rechargePriceCounter = rechargePriceCounter;
+        this.reChargePriceCounter = reChargePriceCounter;
     }
 
     @Override
@@ -32,11 +34,13 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
         if(type instanceof StableConsumeType){
             return priceCounter;
         }else if(type== MutableConsumeType.RECHARGE){
-            return rechargePriceCounter;
+            return reChargePriceCounter;
         }else if(type== MutableConsumeType.CHAT){
             return messagePriceCounter;
         }else if(type==MutableConsumeType.PLAINCHAT){
             return plainMessagePriceCounter;
+        }else if(type==MutableConsumeType.TRANSFER){
+            return transferPriceCounter;
         }
         throw new UnsupportChargeEvent();
     }

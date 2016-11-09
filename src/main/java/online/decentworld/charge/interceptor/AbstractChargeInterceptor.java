@@ -13,8 +13,12 @@ public abstract class AbstractChargeInterceptor implements  ChargeInterceptor {
     private ChargeInterceptor next;
 
     @Override
-    public ChargeInterceptor then(ChargeInterceptor next) {
-        this.next=next;
+    public ChargeInterceptor addToTail(ChargeInterceptor next) {
+        if(this.next==null){
+            this.next=next;
+        }else{
+            this.next.addToTail(next);
+        }
         return next;
     }
 
@@ -30,17 +34,17 @@ public abstract class AbstractChargeInterceptor implements  ChargeInterceptor {
 
 
     @Override
-    public void afterCharge(ChargeResult result) throws IllegalChargeException  {
+    public void afterCharge(ChargeEvent event,ChargeResult result) throws IllegalChargeException  {
         if(accept(result.getType())) {
-            doAfterCharge(result);
+            doAfterCharge(event,result);
         }
         if(next!=null){
-            next.afterCharge(result);
+            next.afterCharge(event,result);
         }
     }
 
 
     protected  abstract void doBeforeCharge(ChargeEvent event) throws IllegalChargeException;
-    protected  abstract void doAfterCharge(ChargeResult result) throws IllegalChargeException;
+    protected  abstract void doAfterCharge(ChargeEvent event,ChargeResult result) throws IllegalChargeException;
 
 }

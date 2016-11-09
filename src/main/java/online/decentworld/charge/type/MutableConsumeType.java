@@ -7,7 +7,8 @@ public enum MutableConsumeType implements ConsumeType {
 
     PLAINCHAT("online.decentworld.charge.price.MessagePriceCounter"),
     CHAT("online.decentworld.charge.price.MessagePriceCounter"),
-    RECHARGE("online.decentworld.charge.price.RechargePriceCounter");
+    RECHARGE("online.decentworld.charge.price.RechargePriceCounter"),
+    TRANSFER("");
 
     private String counterName;
     private MutableConsumeType(String counterName){

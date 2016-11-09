@@ -41,14 +41,19 @@ public class LogInterceptor extends AbstractChargeInterceptor {
 
 
     @Override
-    protected void doAfterCharge(ChargeResult result) throws IllegalChargeException {
+    protected void doAfterCharge(ChargeEvent event,ChargeResult result) throws IllegalChargeException {
         if (result instanceof P2PChargeResult) {
+            P2PChargeEvent pe = (P2PChargeEvent) event;
             P2PChargeResult pr = (P2PChargeResult) result;
             logger.info("[CHARGE＿AFTER] type#" + pr.getType()
+                    + " payer#" + pe.getPayer() + " payer_operation#" + pe.getPayerChargeOperation()
+                    + " payee#" + pe.getPayee() + " payee_operation#" + pe.getPayeeChargeOperation()
                     + " status#" + pr.getStatusCode() + " payerWealth#" + pr.getPayerWealth() + " payeeWealth#" + pr.getPayeeWealth()
                     + " thread#" + Thread.currentThread().getId());
         } else {
+            SingleChargeEvent se = (SingleChargeEvent) event;
             logger.info("[CHARGE＿AFTER] type#" + result.getType()
+                    + " dwID#" + se.getDwID() + " operation#" + se.getOperation()
                     + " status#" + result.getStatusCode() + " payerWealth#" + result.getPayerWealth()
                     + " thread#" + Thread.currentThread().getId());
         }

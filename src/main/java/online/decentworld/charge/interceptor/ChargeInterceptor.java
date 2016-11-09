@@ -10,7 +10,7 @@ import online.decentworld.charge.type.ConsumeType;
  */
 public interface ChargeInterceptor {
     void beforeCharge(ChargeEvent event) throws IllegalChargeException;
-    void afterCharge(ChargeResult result) throws IllegalChargeException;
+    void afterCharge(ChargeEvent event,ChargeResult result) throws IllegalChargeException;
     boolean accept(ConsumeType type);
-    ChargeInterceptor then(ChargeInterceptor next);
+    ChargeInterceptor addToTail(ChargeInterceptor next);
 }

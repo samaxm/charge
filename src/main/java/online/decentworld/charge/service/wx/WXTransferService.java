@@ -111,7 +111,7 @@ public class WXTransferService extends TransferServiceTemplate
 		Response response=httpclient.newCall(request).execute();
 //		CloseableHttpResponse response=httpclient.execute(post);
 		Map<String, String> map=parseXml(response.body().string());
-		if("SUCCESS".equals(map.get("return_code"))){
+		if("SUCCESS".equals(map.get("return_code"))&&"SUCCESS".equals(map.get("result_code"))){
 			return TransferStatus.SUCCESS;
 		}else{
 			log.error("transfer failed transferNum:"+transferNum+"	transfer failed msg:"+map.get("return_msg")
@@ -159,7 +159,7 @@ public class WXTransferService extends TransferServiceTemplate
 	 public static void main(String[] args) throws Exception {
 
 		 WXTransferService service=new WXTransferService();
-		 service.createTransfer(1,"123","oiYBlwmYqwXLg-ke5uU371rRyqaU","123123","127.74.13.117");
+		 service.createTransfer(1,"大腕提现","oiYBlwmYqwXLg-ke5uU371rRyqaU","12432123121","127.74.13.117");
 	}
 
 

@@ -12,7 +12,7 @@ import online.decentworld.charge.receipt.ChargeReceiptWrapper;
 public interface ChargeService {
 
     public ChargeReceipt charge(ChargeEvent event) throws IllegalChargeException;
-    public ChargeInterceptor setInterceptor(ChargeInterceptor interceptor);
+    public ChargeInterceptor addInterceptor(ChargeInterceptor interceptor);
     public void setChargerFactory(ChargerFactory factory);
     public void setPriceCounterFactory(PriceCounterFactory priceCounterFactory);
     public void setChargeReceiptWrapper(ChargeReceiptWrapper wrapper);

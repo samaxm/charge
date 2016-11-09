@@ -1,6 +1,7 @@
 package online.decentworld.charge;
 
 import online.decentworld.charge.charger.*;
+import online.decentworld.charge.interceptor.TransferInterceptor;
 import online.decentworld.charge.receipt.ChargeReceipt;
 import online.decentworld.charge.receipt.DefaultChargeReceiptWrapper;
 import online.decentworld.charge.event.ChargeEvent;
@@ -11,6 +12,7 @@ import online.decentworld.charge.price.*;
 import online.decentworld.charge.receipt.ChargeReceiptWrapper;
 import online.decentworld.rdb.mapper.ConsumePriceMapper;
 import online.decentworld.rdb.mapper.OrderMapper;
+import online.decentworld.rdb.mapper.TransferHistoryMapper;
 import online.decentworld.rdb.mapper.WealthMapper;
 
 /**
@@ -30,13 +32,17 @@ public class ChargeServiceTemplate implements ChargeService {
         PriceCountResult price=counter.getPrice(event);
         ICharger charger=chargerFactory.getCharger(event);
         ChargeResult chargeResult=charger.charge(event,price);
-        headInterceptor.afterCharge(chargeResult);
+        headInterceptor.afterCharge(event,chargeResult);
         return wrapper.wrapChargeResult(chargeResult,price);
     }
 
     @Override
-    public ChargeInterceptor setInterceptor(ChargeInterceptor interceptor) {
-        this.headInterceptor=interceptor;
+    public ChargeInterceptor addInterceptor(ChargeInterceptor interceptor) {
+        if(headInterceptor==null){
+            this.headInterceptor=interceptor;
+        }else{
+            headInterceptor.addToTail(interceptor);
+        }
         return interceptor;
     }
 
@@ -55,17 +61,19 @@ public class ChargeServiceTemplate implements ChargeService {
     }
 
 
-    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
+    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper,TransferHistoryMapper transferHistoryMapper){
         ChargeServiceTemplate service=new ChargeServiceTemplate();
+        TransferInterceptor interceptor=new TransferInterceptor(transferHistoryMapper);
+
         service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
         service.setChargerFactory(new DefaultChargerFactory(new DefalutCharger(new DBCharger(wealthMapper))));
-        service.setInterceptor(new LogInterceptor());
+        service.addInterceptor(new LogInterceptor()).addToTail(interceptor);
         DBPriceCounter dbPriceCounter=new DBPriceCounter();
         dbPriceCounter.setPriceMapper(consumePriceMapper);
         MessagePriceCounter messagePriceCounter=new MessagePriceCounter();
-        RechargePriceCounter rechargePriceCounter=new RechargePriceCounter();
-        rechargePriceCounter.setOrderMapper(orderMapper);
-        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter,rechargePriceCounter);
+        ReChargePriceCounter reChargePriceCounter =new ReChargePriceCounter();
+        reChargePriceCounter.setOrderMapper(orderMapper);
+        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter, reChargePriceCounter);
         service.setPriceCounterFactory(configPriceCounterFactory);
         return service;
     }

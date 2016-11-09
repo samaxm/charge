@@ -2,6 +2,7 @@ package online.decentworld.charge.charger;
 
 import online.decentworld.charge.ChargeResultCode;
 import online.decentworld.rdb.entity.DBChargeResult;
+import online.decentworld.rdb.entity.Wealth;
 import online.decentworld.rdb.mapper.WealthMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +22,8 @@ public class DBCharger {
     }
 
     public P2PChargeResult p2pCharge(String payerID, String payeeID, int payerChargeAmount, int payeeChargeAmount) {
-        DBChargeResult payerResult=null;
-        DBChargeResult payeeResult = null;
+        DBChargeResult payerResult;
+        DBChargeResult payeeResult;
         P2PChargeResult result =new P2PChargeResult();
         if(payerChargeAmount!=0) {
             try {
@@ -45,8 +46,8 @@ public class DBCharger {
                 return  result;
             }
         }else{
-            //flag -1 means no change
-            result.setPayerWealth(-1);
+            Wealth w=wealthMapper.selectByPrimaryKey(payerID);
+            result.setPayerWealth(w.getWealth());
         }
         if(payeeChargeAmount!=0) {
             try {
@@ -70,19 +71,26 @@ public class DBCharger {
                 return  result;
             }
         }else {
-            //flag -1 means no change
-            result.setPayeeWealth(-1);
+            Wealth w=wealthMapper.selectByPrimaryKey(payeeID);
+            result.setPayeeWealth(w.getWealth());
         }
         result.setStatusCode(ChargeResultCode.SUCCESS);
         return result;
     }
 
     public ChargeResult charge(String dwID, int chargeAmount) {
-        DBChargeResult dbResult = null;
+        DBChargeResult dbResult;
         ChargeResult result =new ChargeResult();
         if(chargeAmount!=0) {
             try {
                 dbResult = wealthMapper.charge(dwID, chargeAmount);
+                if(dbResult.getResultCode()==DBChargeResult.WEALTH_NOT_ENOUGH){
+                    result.setStatusCode(ChargeResultCode.WEALTH_LACK);
+                    return result;
+                }else if(dbResult.getResultCode()!=DBChargeResult.SUCCESS){
+                    result.setStatusCode(ChargeResultCode.FAIL);
+                    return result;
+                }
                 result.setPayerWealth(dbResult.getNewWealth());
                 result.setPayerID(dwID);
             } catch (Exception ex) {
@@ -91,8 +99,8 @@ public class DBCharger {
                 return  result;
             }
         }else{
-            //flag -1 means no change
-            result.setPayerWealth(-1);
+            Wealth w=wealthMapper.selectByPrimaryKey(dwID);
+            result.setPayerWealth(w.getWealth());
         }
         result.setStatusCode(ChargeResultCode.SUCCESS);
         return result;
