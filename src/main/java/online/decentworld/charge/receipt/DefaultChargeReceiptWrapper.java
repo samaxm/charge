@@ -23,7 +23,7 @@ public class DefaultChargeReceiptWrapper implements ChargeReceiptWrapper {
         logger.debug("[CONSUME_TYPE]#"+type);
         if(type== MutableConsumeType.RECHARGE){
             return new PlainChargeReceipt(result);
-        }else  if(type==MutableConsumeType.PLAINCHAT){
+        }else if(type==MutableConsumeType.PLAINCHAT){
             P2PPriceCountResult p2PPriceCountResult=(P2PPriceCountResult)price;
             if(p2PPriceCountResult.getPayeeChargeAmount()==0){
                 return new MessageReceipt(result, ChatRelation.STRANGER, ChatStatus.OVERFLOW);

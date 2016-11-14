@@ -12,6 +12,20 @@
         <!-- slf4j日志文件管理包版本 -->
         <slf4j.version>1.7.10</slf4j.version>
     </properties>
+    <build>
+        <finalName>charge</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 
     <dependencies>
         <!-- log -->

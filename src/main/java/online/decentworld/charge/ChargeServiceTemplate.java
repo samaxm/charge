@@ -71,9 +71,9 @@ public class ChargeServiceTemplate implements ChargeService {
         DBPriceCounter dbPriceCounter=new DBPriceCounter();
         dbPriceCounter.setPriceMapper(consumePriceMapper);
         MessagePriceCounter messagePriceCounter=new MessagePriceCounter();
-        ReChargePriceCounter reChargePriceCounter =new ReChargePriceCounter();
-        reChargePriceCounter.setOrderMapper(orderMapper);
-        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter, reChargePriceCounter);
+        RechargePriceCounter rechargePriceCounter =new RechargePriceCounter();
+        rechargePriceCounter.setOrderMapper(orderMapper);
+        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter, rechargePriceCounter);
         service.setPriceCounterFactory(configPriceCounterFactory);
         return service;
     }

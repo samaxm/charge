@@ -4,6 +4,8 @@ package online.decentworld.charge.service.wx;
 import okhttp3.*;
 import online.decentworld.charge.service.TransferServiceTemplate;
 import online.decentworld.charge.service.TransferStatus;
+import online.decentworld.tools.Environment;
+import online.decentworld.tools.EnvironmentCofing;
 import online.decentworld.tools.MD5;
 import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
@@ -57,8 +59,14 @@ public class WXTransferService extends TransferServiceTemplate
 			};
 		KeyStore keyStore = KeyStore.getInstance("PKCS12");
 		//读取本机存放PKCS12证书文件
-		FileInputStream instream = new FileInputStream(new File(WXConfig.certificate));
-		try {
+			String location;
+			if(EnvironmentCofing.environment== Environment.LOCAL){
+				location=WXConfig.local_certificate;
+			}else{
+				location=WXConfig.server_certificate;
+			}
+			FileInputStream instream = new FileInputStream(new File(location));
+			try {
 		//指定PKCS12的密码
 		keyStore.load(instream, WXConfig.mch_id.toCharArray());
 //		System.setProperty("javax.net.ssl.trustStore","clientTrustStore.key");

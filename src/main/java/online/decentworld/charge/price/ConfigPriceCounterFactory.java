@@ -16,16 +16,16 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
 
     private MessagePriceCounter messagePriceCounter;
 
-    private ReChargePriceCounter reChargePriceCounter;
+    private RechargePriceCounter rechargePriceCounter;
 
     private PlainMessagePriceCounter plainMessagePriceCounter=new PlainMessagePriceCounter();
 
     private TransferPriceCounter transferPriceCounter=new TransferPriceCounter();
 
-    public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, ReChargePriceCounter reChargePriceCounter) {
+    public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, RechargePriceCounter rechargePriceCounter) {
         this.priceCounter = priceCounter;
         this.messagePriceCounter = messagePriceCounter;
-        this.reChargePriceCounter = reChargePriceCounter;
+        this.rechargePriceCounter = rechargePriceCounter;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
         if(type instanceof StableConsumeType){
             return priceCounter;
         }else if(type== MutableConsumeType.RECHARGE){
-            return reChargePriceCounter;
+            return rechargePriceCounter;
         }else if(type== MutableConsumeType.CHAT){
             return messagePriceCounter;
         }else if(type==MutableConsumeType.PLAINCHAT){
