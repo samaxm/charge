@@ -47,11 +47,6 @@ public class P2PChargeEvent implements ChargeEvent {
     }
 
 
-    public P2PChargeEvent(String payer, String payee) {
-        this.payer = payer;
-        this.payee = payee;
-    }
-
     public P2PChargeEvent(String payer, String payee, ChargeOperation payerChargeOperation, ChargeOperation payeeChargeOperation, ConsumeType type) {
         this.payer = payer;
         this.payee = payee;

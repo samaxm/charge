@@ -42,7 +42,7 @@ public class DBCharger {
                 result.setPayerID(payerID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
-                logger.warn("", ex);
+                logger.warn("[PAYER_CHARGE_FAIL]", ex);
                 return  result;
             }
         }else{
@@ -66,8 +66,13 @@ public class DBCharger {
                 result.setPayeeID(payeeID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
-                logger.warn("", ex);
-                //TODO:payback
+                logger.warn("[PAYEE_CHARGE_FAIL] thread#"+Thread.currentThread().getId(), ex);
+                try {
+                    //SIMPLE PAY BACK PAYER
+                    wealthMapper.charge(payerID, -payerChargeAmount);
+                }catch (Exception e){
+                    logger.warn("[PAYEE_PAYBACK_FAIL] thread#"+Thread.currentThread().getId(), e);
+                }
                 return  result;
             }
         }else {
@@ -95,7 +100,7 @@ public class DBCharger {
                 result.setPayerID(dwID);
             } catch (Exception ex) {
                 result.setStatusCode(ChargeResultCode.FAIL);
-                logger.warn("", ex);
+                logger.warn("[PAYER_CHARGE_FAIL]", ex);
                 return  result;
             }
         }else{

@@ -22,6 +22,8 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
 
     private TransferPriceCounter transferPriceCounter=new TransferPriceCounter();
 
+    private TipPriceCounter tipPriceCounter=new TipPriceCounter();
+
     public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, RechargePriceCounter rechargePriceCounter) {
         this.priceCounter = priceCounter;
         this.messagePriceCounter = messagePriceCounter;
@@ -41,6 +43,8 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
             return plainMessagePriceCounter;
         }else if(type==MutableConsumeType.TRANSFER){
             return transferPriceCounter;
+        }else if(type==MutableConsumeType.TIP){
+            return tipPriceCounter;
         }
         throw new UnsupportChargeEvent();
     }

@@ -53,7 +53,8 @@ public class TransferInterceptor extends AbstractChargeInterceptor {
         if(result.getStatusCode()== ChargeResultCode.SUCCESS){
             if(transferEvent.getAccountType()== TransferAccountType.WXPAY){
                 try {
-                    wxTransferService.createTransfer(transferEvent.getAmount()/100,notification,transferEvent.getAccount(),String.valueOf(transferEvent.getRecordID()),transferEvent.getIp());
+                    //扣去10%手续费
+                    wxTransferService.createTransfer(transferEvent.getAmount()*9/10,notification,transferEvent.getAccount(),String.valueOf(transferEvent.getRecordID()),transferEvent.getIp());
                     TransferHistory history=new TransferHistory();
                     history.setId(transferEvent.getRecordID());
                     history.setStatus(TransferStatus.SUCCESS.name());
@@ -73,7 +74,7 @@ public class TransferInterceptor extends AbstractChargeInterceptor {
 
     @Override
     public boolean accept(ConsumeType type) {
-       if(type.getTypeIdentify().equals(MutableConsumeType.TRANSFER.name())){
+       if(type == MutableConsumeType.TRANSFER){
            return true;
        }else{
            return false;

@@ -1,6 +1,7 @@
 package online.decentworld.charge;
 
 import online.decentworld.charge.charger.*;
+import online.decentworld.charge.interceptor.TipInterceptor;
 import online.decentworld.charge.interceptor.TransferInterceptor;
 import online.decentworld.charge.receipt.ChargeReceipt;
 import online.decentworld.charge.receipt.DefaultChargeReceiptWrapper;
@@ -10,10 +11,7 @@ import online.decentworld.charge.interceptor.ChargeInterceptor;
 import online.decentworld.charge.interceptor.LogInterceptor;
 import online.decentworld.charge.price.*;
 import online.decentworld.charge.receipt.ChargeReceiptWrapper;
-import online.decentworld.rdb.mapper.ConsumePriceMapper;
-import online.decentworld.rdb.mapper.OrderMapper;
-import online.decentworld.rdb.mapper.TransferHistoryMapper;
-import online.decentworld.rdb.mapper.WealthMapper;
+import online.decentworld.rdb.mapper.*;
 
 /**
 * Created by Sammax on 2016/9/22.
@@ -61,13 +59,13 @@ public class ChargeServiceTemplate implements ChargeService {
     }
 
 
-    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper,TransferHistoryMapper transferHistoryMapper){
+    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper,TransferHistoryMapper transferHistoryMapper,TipRecordsMapper tipRecordsMapper){
         ChargeServiceTemplate service=new ChargeServiceTemplate();
         TransferInterceptor interceptor=new TransferInterceptor(transferHistoryMapper);
-
+        TipInterceptor tipInterceptor=new TipInterceptor(tipRecordsMapper);
         service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
         service.setChargerFactory(new DefaultChargerFactory(new DefalutCharger(new DBCharger(wealthMapper))));
-        service.addInterceptor(new LogInterceptor()).addToTail(interceptor);
+        service.addInterceptor(new LogInterceptor()).addToTail(interceptor).addToTail(tipInterceptor);
         DBPriceCounter dbPriceCounter=new DBPriceCounter();
         dbPriceCounter.setPriceMapper(consumePriceMapper);
         MessagePriceCounter messagePriceCounter=new MessagePriceCounter();

@@ -100,7 +100,7 @@ public class WXTransferService extends TransferServiceTemplate
 		if(amount<1){
 			return TransferStatus.NOTENOUGH;
 		}
-		info.setAmount(String.valueOf((int)(amount*100)));
+		info.setAmount(String.valueOf(amount));
 		info.setCheck_name("NO_CHECK");
 		info.setDesc(descipe);
 		info.setMch_appid(WXConfig.appid);
@@ -165,9 +165,9 @@ public class WXTransferService extends TransferServiceTemplate
 	 }
 
 	 public static void main(String[] args) throws Exception {
-
-		 WXTransferService service=new WXTransferService();
-		 service.createTransfer(1,"大腕提现","oiYBlwmYqwXLg-ke5uU371rRyqaU","12432123121","127.74.13.117");
+		 System.out.println(100*9/10);
+//		 WXTransferService service=new WXTransferService();
+//		 service.createTransfer(110,"大腕提现","oiYBlwmYqwXLg-ke5uU371rRyqaU","124322342123121","127.74.13.117");
 	}
 
 
