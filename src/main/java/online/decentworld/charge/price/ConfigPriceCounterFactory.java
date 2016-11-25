@@ -6,23 +6,31 @@ import online.decentworld.charge.exception.UnsupportChargeEvent;
 import online.decentworld.charge.type.ConsumeType;
 import online.decentworld.charge.type.MutableConsumeType;
 import online.decentworld.charge.type.StableConsumeType;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * Created by Sammax on 2016/10/6.
  */
+@Component
 public class ConfigPriceCounterFactory implements PriceCounterFactory {
 
+
+    @Resource(name = "dBPriceCounter")
     private DBPriceCounter priceCounter;
-
+    @Resource(name = "messagePriceCounter")
     private MessagePriceCounter messagePriceCounter;
-
+    @Resource(name = "rechargePriceCounter")
     private RechargePriceCounter rechargePriceCounter;
-
-    private PlainMessagePriceCounter plainMessagePriceCounter=new PlainMessagePriceCounter();
-
-    private TransferPriceCounter transferPriceCounter=new TransferPriceCounter();
-
-    private TipPriceCounter tipPriceCounter=new TipPriceCounter();
+    @Resource(name = "plainMessagePriceCounter")
+    private PlainMessagePriceCounter plainMessagePriceCounter;
+    @Resource(name = "transferPriceCounter")
+    private TransferPriceCounter transferPriceCounter;
+    @Resource(name = "tipPriceCounter")
+    private TipPriceCounter tipPriceCounter;
+    @Resource(name = "worthChangePriceCounter")
+    private WorthChangePriceCounter worthChangePriceCounter;
 
     public ConfigPriceCounterFactory(DBPriceCounter priceCounter, MessagePriceCounter messagePriceCounter, RechargePriceCounter rechargePriceCounter) {
         this.priceCounter = priceCounter;
@@ -45,6 +53,8 @@ public class ConfigPriceCounterFactory implements PriceCounterFactory {
             return transferPriceCounter;
         }else if(type==MutableConsumeType.TIP){
             return tipPriceCounter;
+        }else if(type==MutableConsumeType.CHANGE_WORTH){
+            return worthChangePriceCounter;
         }
         throw new UnsupportChargeEvent();
     }

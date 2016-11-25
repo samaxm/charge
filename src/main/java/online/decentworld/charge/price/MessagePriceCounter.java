@@ -1,10 +1,12 @@
 package online.decentworld.charge.price;
 
 import online.decentworld.charge.event.ChargeEvent;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/9/23.
  */
+@Component(value = "messagePriceCounter")
 public class MessagePriceCounter implements PriceCounter {
 
 

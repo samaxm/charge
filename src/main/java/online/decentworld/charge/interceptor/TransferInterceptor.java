@@ -14,22 +14,26 @@ import online.decentworld.rdb.entity.TransferHistory;
 import online.decentworld.rdb.mapper.TransferHistoryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/11/8.
  */
+@Component("transferInterceptor")
 public class TransferInterceptor extends AbstractChargeInterceptor {
 
-
+    @Autowired
     private TransferHistoryMapper transferHistoryMapper;
 
     private WXTransferService wxTransferService=new WXTransferService();
+
+
     private static String notification="大腕提现";
     private static Logger logger= LoggerFactory.getLogger(TransferInterceptor.class);
     private static int MIN_TRANSFER_AMOUNT=100;
 
     public TransferInterceptor(TransferHistoryMapper transferHistoryMapper) {
-
         this.transferHistoryMapper = transferHistoryMapper;
     }
 

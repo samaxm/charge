@@ -4,11 +4,13 @@ import online.decentworld.cache.redis.RedisTemplate;
 import online.decentworld.cache.redis.ReturnResult;
 import online.decentworld.charge.event.ChargeEvent;
 import online.decentworld.charge.event.P2PChargeEvent;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 
 /**
  * Created by Sammax on 2016/9/23.
  */
+@Component(value = "plainMessagePriceCounter")
 public class PlainMessagePriceCounter extends RedisTemplate implements PriceCounter {
 
     private static String CHAT_COUNT="CHAT:COUNT";

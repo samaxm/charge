@@ -9,10 +9,12 @@ import online.decentworld.rpc.dto.message.types.ChatRelation;
 import online.decentworld.rpc.dto.message.types.ChatStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/10/7.
  */
+@Component
 public class DefaultChargeReceiptWrapper implements ChargeReceiptWrapper {
 
     private static Logger logger= LoggerFactory.getLogger(ChargeReceiptWrapper.class);

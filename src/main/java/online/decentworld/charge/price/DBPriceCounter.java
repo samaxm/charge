@@ -8,12 +8,16 @@ import online.decentworld.rdb.entity.ConsumePrice;
 import online.decentworld.rdb.mapper.ConsumePriceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/9/12.
  */
+@Component(value = "dBPriceCounter")
 public class DBPriceCounter implements PriceCounter{
 
+    @Autowired
     private ConsumePriceMapper priceMapper;
 
     private static Logger logger= LoggerFactory.getLogger(DBPriceCounter.class);

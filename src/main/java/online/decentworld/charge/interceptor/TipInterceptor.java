@@ -12,14 +12,18 @@ import online.decentworld.rdb.mapper.TipRecordsMapper;
 import online.decentworld.tools.LoggerIdentifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/11/16.
  */
+@Component("tipInterceptor")
 public class TipInterceptor extends AbstractChargeInterceptor {
 
     private static Logger logger= LoggerFactory.getLogger(LoggerIdentifier.DB_ERROR);
 
+    @Autowired
     private TipRecordsMapper tipRecordsMapper;
 
     public TipInterceptor(TipRecordsMapper tipRecordsMapper) {

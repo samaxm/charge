@@ -5,12 +5,16 @@ import online.decentworld.charge.event.P2PChargeEvent;
 import online.decentworld.charge.event.SingleChargeEvent;
 import online.decentworld.charge.price.P2PPriceCountResult;
 import online.decentworld.charge.price.PriceCountResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/9/24.
  */
+@Component
 public class DefalutCharger implements  ICharger {
 
+    @Autowired
     private DBCharger charger;
 
     public DefalutCharger(DBCharger charger) {

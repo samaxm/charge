@@ -13,8 +13,6 @@ public class OrderService implements IOrderService
 {
 
     private OrderMapper orderMapper;
-//    private static String RECHRGE_USER_NOTIFICATION="decentworld_recharge";
-    private static String RECHRGE_USER_NOTIFICATION="大腕用户充值";
 
     public OrderMapper getOrderMapper() {
         return orderMapper;
@@ -25,7 +23,7 @@ public class OrderService implements IOrderService
     }
 
     @Override
-    public OrderReceipt createOrder(PayChannel channel, int amount, String dwID, OrderType orderTpye, String extra, String ip) throws Exception {
+    public OrderReceipt createOrder(PayChannel channel, int amount, String dwID, OrderType orderTpye, String extra, String ip,String msg) throws Exception {
         Order order=new Order();
         order.setAmount(amount);
         order.setChannel(channel.getChannelString());
@@ -33,8 +31,9 @@ public class OrderService implements IOrderService
         order.setType(orderTpye.getValue());
         order.setIsPaid(false);
         order.setTime(new Date());
-        order.setOrdernumer(dwID+""+System.currentTimeMillis());
-        Object request=RequestCreatorFactory.getRequestCreator(channel).getRequestData(order,ip,RECHRGE_USER_NOTIFICATION);
+        order.setOrdernumer(dwID + "" + System.currentTimeMillis());
+        order.setExtra(extra);
+        Object request=RequestCreatorFactory.getRequestCreator(channel).getRequestData(order,ip,msg);
         orderMapper.insertSelective(order);
         return new OrderReceipt(order.getOrdernumer(),request);
     }
@@ -47,5 +46,10 @@ public class OrderService implements IOrderService
     @Override
     public boolean checkOrder(Order order) {
         return false;
+    }
+
+    @Override
+    public void receiverOrderSuccessResponse(String orderNum) {
+        orderMapper.updateStatus(orderNum,true);
     }
 }

@@ -25,5 +25,8 @@
         <module name="charge" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="charge" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

@@ -9,10 +9,12 @@ import online.decentworld.charge.exception.IllegalChargeException;
 import online.decentworld.charge.type.ConsumeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by Sammax on 2016/10/6.
  */
+@Component("logInterceptor")
 public class LogInterceptor extends AbstractChargeInterceptor {
 
     private Logger logger = LoggerFactory.getLogger(LogInterceptor.class);

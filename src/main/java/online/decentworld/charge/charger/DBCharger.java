@@ -6,15 +6,19 @@ import online.decentworld.rdb.entity.Wealth;
 import online.decentworld.rdb.mapper.WealthMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 
 /**
 * Created by Sammax on 2016/9/8.
 */
+@Component
 public class DBCharger {
 
     private static Logger logger= LoggerFactory.getLogger(DBCharger.class);
 
+    @Autowired
     private WealthMapper wealthMapper;
 
     public DBCharger(WealthMapper wealthMapper) {

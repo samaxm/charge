@@ -17,7 +17,7 @@ public interface IOrderService {
      * @return
      * @throws Exception
      */
-    OrderReceipt createOrder(PayChannel channel,int amount,String dwID,OrderType orderTpye,String extra,String ip) throws Exception;
+    OrderReceipt createOrder(PayChannel channel,int amount,String dwID,OrderType orderTpye,String extra,String ip,String msg) throws Exception;
 
     /**
      *
@@ -32,4 +32,6 @@ public interface IOrderService {
      * @return
      */
     boolean checkOrder(Order order);
+
+    void receiverOrderSuccessResponse(String orderNum);
 }

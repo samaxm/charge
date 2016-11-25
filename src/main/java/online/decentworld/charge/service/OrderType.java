@@ -4,7 +4,7 @@ package online.decentworld.charge.service;
  * Created by Sammax on 2016/9/24.
  */
 public enum OrderType {
-    RECHARGE(0);//用户腕审核失败，直接付费成为普通用户
+    RECHARGE(0),VIP_REGISTER(1);
     private int value;
     private OrderType(int value){
         this.value=value;
