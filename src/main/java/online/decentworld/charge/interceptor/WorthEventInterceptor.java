@@ -1,5 +1,7 @@
 package online.decentworld.charge.interceptor;
 
+import online.decentworld.cache.redis.SessionCache;
+import online.decentworld.charge.ChargeResultCode;
 import online.decentworld.charge.charger.ChargeResult;
 import online.decentworld.charge.event.ChangeWorthEvent;
 import online.decentworld.charge.event.ChargeEvent;
@@ -12,6 +14,7 @@ import online.decentworld.rdb.mapper.UserMapper;
 import online.decentworld.rdb.mapper.WorthChangeRecordsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -26,7 +29,8 @@ public class WorthEventInterceptor extends AbstractChargeInterceptor
     private WorthChangeRecordsMapper worthChangeRecordsMapper;
     @Autowired
     private UserMapper userMapper;
-
+    @Autowired
+    private SessionCache sessionCache;
 
     @Override
     protected void doBeforeCharge(ChargeEvent event) throws IllegalChargeException {
@@ -37,22 +41,29 @@ public class WorthEventInterceptor extends AbstractChargeInterceptor
     }
 
     @Override
+    @Transactional
     protected void doAfterCharge(ChargeEvent event, ChargeResult result) throws IllegalChargeException {
-        //charge success and record to worth change history
-        ChangeWorthEvent changeWorthEvent=(ChangeWorthEvent)event;
-        WorthChangeRecords records=new WorthChangeRecords();
-        User user=userMapper.selectByPrimaryKey(changeWorthEvent.getDwID());
-        records.setDwid(changeWorthEvent.getDwID());
-        records.setTime(new Date());
-        records.setWorthBefore(user.getWorth());
-        records.setWorthAfter(changeWorthEvent.getWorth());
-        //add change record
-        worthChangeRecordsMapper.insert(records);
-        //change worth
-        User change=new User();
-        change.setId(user.getId());
-        change.setWorth(changeWorthEvent.getWorth());
-        userMapper.updateByPrimaryKeySelective(change);
+        if(result.getStatusCode()== ChargeResultCode.SUCCESS) {
+            //charge success and record to worth change history
+            ChangeWorthEvent changeWorthEvent = (ChangeWorthEvent) event;
+            WorthChangeRecords records = new WorthChangeRecords();
+            User user = userMapper.selectByPrimaryKey(changeWorthEvent.getDwID());
+            records.setDwid(changeWorthEvent.getDwID());
+            records.setTime(new Date());
+            records.setWorthBefore(user.getWorth());
+            records.setWorthAfter(changeWorthEvent.getWorth());
+            //add change record
+            worthChangeRecordsMapper.insert(records);
+            //change worth
+            User change = new User();
+            change.setId(user.getId());
+            change.setWorth(changeWorthEvent.getWorth());
+            userMapper.updateByPrimaryKeySelective(change);
+            //change worth cache
+            if(!sessionCache.setUserWorth(user.getId(),String.valueOf(changeWorthEvent.getWorth()))){
+                throw new RuntimeException("change worth cache fail");
+            }
+        }
     }
 
     @Override

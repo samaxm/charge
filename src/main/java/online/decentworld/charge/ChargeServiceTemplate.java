@@ -14,43 +14,37 @@ import online.decentworld.charge.receipt.DefaultChargeReceiptWrapper;
 import online.decentworld.rdb.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
 
 
 /**
 * Created by Sammax on 2016/9/22.
 */
-@Component
+//@Component
 public class ChargeServiceTemplate implements ChargeService {
 
 
     private  static Logger logger= LoggerFactory.getLogger(ChargeServiceTemplate.class);
 
 
-    @Autowired
+//    @Autowired
     private ChargerFactory chargerFactory;
-    @Autowired
+//    @Autowired
     private PriceCounterFactory priceCounterFactory;
-    @Autowired
+//    @Autowired
     private ChargeReceiptWrapper wrapper;
-    @Resource(name = "tipInterceptor")
+//    @Resource(name = "tipInterceptor")
     private ChargeInterceptor tipInterceptor;
-    @Resource(name = "transferInterceptor")
+//    @Resource(name = "transferInterceptor")
     private ChargeInterceptor transferInterceptor;
-    @Resource(name = "worthEventInterceptor")
+//    @Resource(name = "worthEventInterceptor")
     private ChargeInterceptor worthEventInterceptor;
 
 
     private ChargeInterceptor headInterceptor;
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         //init interceptor chain
-        logger.debug("2309812904hjisdfhk230954209385=================================");
         headInterceptor=new LogInterceptor();
         headInterceptor.addToTail(tipInterceptor).addToTail(transferInterceptor)
         .addToTail(worthEventInterceptor);
@@ -111,20 +105,20 @@ public class ChargeServiceTemplate implements ChargeService {
         return service;
     }
 
-//    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
-//        ChargeServiceTemplate service=new ChargeServiceTemplate();
-////        TransferInterceptor interceptor=new TransferInterceptor(transferHistoryMapper);
-////        TipInterceptor tipInterceptor=new TipInterceptor(tipRecordsMapper);
-//        service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
-//        service.setChargerFactory(new DefaultChargerFactory(new DefalutCharger(new DBCharger(wealthMapper))));
-//        service.addInterceptor(new LogInterceptor());
-//        DBPriceCounter dbPriceCounter=new DBPriceCounter();
-//        dbPriceCounter.setPriceMapper(consumePriceMapper);
-//        MessagePriceCounter messagePriceCounter=new MessagePriceCounter();
-//        RechargePriceCounter rechargePriceCounter =new RechargePriceCounter();
-//        rechargePriceCounter.setOrderMapper(orderMapper);
-//        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter, rechargePriceCounter);
-//        service.setPriceCounterFactory(configPriceCounterFactory);
-//        return service;
-//    }
+    public static ChargeServiceTemplate defaultService(WealthMapper wealthMapper,ConsumePriceMapper consumePriceMapper,OrderMapper orderMapper){
+        ChargeServiceTemplate service=new ChargeServiceTemplate();
+//        TransferInterceptor interceptor=new TransferInterceptor(transferHistoryMapper);
+//        TipInterceptor tipInterceptor=new TipInterceptor(tipRecordsMapper);
+        service.setChargeReceiptWrapper(new DefaultChargeReceiptWrapper());
+        service.setChargerFactory(new DefaultChargerFactory(new DefalutCharger(new DBCharger(wealthMapper))));
+        service.addInterceptor(new LogInterceptor());
+        DBPriceCounter dbPriceCounter=new DBPriceCounter();
+        dbPriceCounter.setPriceMapper(consumePriceMapper);
+        MessagePriceCounter messagePriceCounter=new MessagePriceCounter();
+        RechargePriceCounter rechargePriceCounter =new RechargePriceCounter();
+        rechargePriceCounter.setOrderMapper(orderMapper);
+        ConfigPriceCounterFactory configPriceCounterFactory=new ConfigPriceCounterFactory(dbPriceCounter,messagePriceCounter, rechargePriceCounter);
+        service.setPriceCounterFactory(configPriceCounterFactory);
+        return service;
+    }
 }
