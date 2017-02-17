@@ -14,35 +14,39 @@ import online.decentworld.charge.receipt.DefaultChargeReceiptWrapper;
 import online.decentworld.rdb.mapper.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 
 
 /**
 * Created by Sammax on 2016/9/22.
 */
-//@Component
+@Component
 public class ChargeServiceTemplate implements ChargeService {
 
 
     private  static Logger logger= LoggerFactory.getLogger(ChargeServiceTemplate.class);
 
 
-//    @Autowired
+    @Autowired
     private ChargerFactory chargerFactory;
-//    @Autowired
+    @Autowired
     private PriceCounterFactory priceCounterFactory;
-//    @Autowired
+    @Autowired
     private ChargeReceiptWrapper wrapper;
-//    @Resource(name = "tipInterceptor")
+    @Resource(name = "tipInterceptor")
     private ChargeInterceptor tipInterceptor;
-//    @Resource(name = "transferInterceptor")
+    @Resource(name = "transferInterceptor")
     private ChargeInterceptor transferInterceptor;
-//    @Resource(name = "worthEventInterceptor")
+    @Resource(name = "worthEventInterceptor")
     private ChargeInterceptor worthEventInterceptor;
-
 
     private ChargeInterceptor headInterceptor;
 
-//    @PostConstruct
+    @PostConstruct
     public void init(){
         //init interceptor chain
         headInterceptor=new LogInterceptor();

@@ -31,7 +31,7 @@ public class TransferInterceptor extends AbstractChargeInterceptor {
 
     private static String notification="大腕提现";
     private static Logger logger= LoggerFactory.getLogger(TransferInterceptor.class);
-    private static int MIN_TRANSFER_AMOUNT=100;
+    private static int MIN_TRANSFER_AMOUNT=500;
 
     public TransferInterceptor(TransferHistoryMapper transferHistoryMapper) {
         this.transferHistoryMapper = transferHistoryMapper;
@@ -39,7 +39,6 @@ public class TransferInterceptor extends AbstractChargeInterceptor {
 
     @Override
     protected void doBeforeCharge(ChargeEvent event) throws IllegalChargeException {
-
         TransferEvent transferEvent=(TransferEvent)event;
         if(transferEvent.getRecordID()==null) {
             if(transferEvent.getAmount()<MIN_TRANSFER_AMOUNT){

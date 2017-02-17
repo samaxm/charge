@@ -29,23 +29,23 @@ public class PlainMessagePriceCounter extends RedisTemplate implements PriceCoun
             final String fromID=p2PChargeEvent.getPayer();
             final String toID=p2PChargeEvent.getPayee();
             ReturnResult result=cache(jedis -> {
-                String fromWorthString=jedis.hget(CacheKey.WORTH, fromID);
+//                String fromWorthString=jedis.hget(CacheKey.WORTH, fromID);
                 String toWorthString=jedis.hget(CacheKey.WORTH, toID);
-                Integer fromWorth;
+//                Integer fromWorth;
                 Integer toWorth;
-                if(fromWorthString==null){
+                if(toWorthString==null){
                     User user=userMapper.selectByPrimaryKey(fromID);
-                    fromWorth=user.getWorth();
-                    jedis.hset(CacheKey.WORTH, fromID, String.valueOf(fromWorth));
+                    toWorth=user.getWorth();
+                    jedis.hset(CacheKey.WORTH, fromID, String.valueOf(toWorth));
                 }else {
-                    fromWorth=Integer.parseInt(fromWorthString);
+                    toWorth=Integer.parseInt(toWorthString);
                 }
 
-                if(toWorthString==null){
-                    User user=userMapper.selectByPrimaryKey(toID);
-                    toWorth=user.getWorth();
-                    jedis.hset(CacheKey.WORTH, fromID,String.valueOf(toWorth));
-                }else {toWorth=Integer.parseInt(toWorthString);}
+//                if(toWorthString==null){
+//                    User user=userMapper.selectByPrimaryKey(toID);
+//                    toWorth=user.getWorth();
+//                    jedis.hset(CacheKey.WORTH, fromID,String.valueOf(toWorth));
+//                }else {toWorth=Integer.parseInt(toWorthString);}
                 //发送方的聊天状态计数器+1
                 Long from_num = jedis.hincrBy(CHAT_COUNT, fromID + toID, 1);
                 //接收方的聊天状态计数器重置为0
@@ -54,13 +54,13 @@ public class PlainMessagePriceCounter extends RedisTemplate implements PriceCoun
                     //发送方连续对话三句且接收方并未回复
                     return ReturnResult.result(new P2PPriceCountResult(toWorth, 0));
                 } else {
-                    return ReturnResult.result(new P2PPriceCountResult(toWorth,fromWorth));
+                    return ReturnResult.result(new P2PPriceCountResult(toWorth,toWorth));
                 }
             });
             if(result.isSuccess()){
                 return (PriceCountResult) result.getResult();
             }else{
-                return new P2PPriceCountResult(-1, 1);
+                return new P2PPriceCountResult(1, 1);
             }
         }
         return null;
